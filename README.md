@@ -19,3 +19,15 @@ go build ./...
 python baseline/scan.py > findings.json
 python eval.py findings.json
 ```
+
+## 增量扫描器（analyzer/）
+
+```
+python analyzer/scan.py inc  --repo . --sarif findings.sarif   # 增量（首次=全量）
+python analyzer/scan.py full --repo . --sarif findings.sarif   # 全量
+python analyzer/scan.py ci   --repo . --baseline main.sarif --sarif pr.sarif
+python analyzer/backtest.py     # 50 条标注样本回测（召回/误报/增量==全量）
+python analyzer/race_test.py    # 多进程并发扫描的缓存一致性测试
+```
+
+设计与并发一致性论证见 `docs/incremental.md`。
